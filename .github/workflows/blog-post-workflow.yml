@@ -1,0 +1,24 @@
+name: Latest blog post workflow
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 * * * *' # Runs every hour
+
+permissions:
+  contents: write # To write the generated contents to the readme
+
+jobs:
+  update-readme-with-blog:
+    name: Update this repo's README with latest blog posts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Pull in tistory posts
+        uses: gautamkrishnar/blog-post-workflow@v1
+        with:
+          max_post_count: "11"
+          remove_duplicates: true
+          feed_list: "https://hongsamgamedev.tistory.com/rss"
+          user_agent: "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+          accept_header: "text/xml"
